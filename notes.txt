@@ -1,0 +1,12 @@
+
+Should implement image-size normalized histograms so multiple image sizes can appear in same folder 
+
+Should also not need album_list.txt but should just read image names in 
+
+Should time each entry
+
+Stop printing punctuation (python 2.7 not python 3)
+
+resizing should be an option for each sorting method
+
+pyc files created when imports are used 

@@ -1,0 +1,24 @@
+dark skin,      115, 82, 68
+light skin,     194, 150, 130
+blue sky,       98, 122, 157
+foliage,        87, 108, 67
+blue flower,    133, 128, 177
+bluish green,   103, 189, 170
+orange,         214, 126, 44
+purplish blue,  80, 91, 166
+moderate red,   193, 90, 99
+purple,         94, 60, 108
+yellow green,   157, 188, 64
+orange yellow,  224, 163, 46
+blue,           56, 61, 150 
+green,          70, 148, 73
+red,            175, 54, 60
+yellow,         231, 199, 31
+magenta,        187, 86, 149
+cyan,           8, 133, 161
+white 9.5,      243, 243, 242
+neutral 8,      200, 200, 200
+neutral 6.5,    160, 160, 160
+neutral 5,      122, 122, 121
+neutral 3.5,    85, 85, 85
+black 2,        52, 52, 52
