@@ -99,7 +99,8 @@ def distHST(H1, H2): # Compute sum of absolute value differencees between histog
     return sum([abs(H1[i] - H2[i]) for i in range(0, len(H1))])
 
 def distCCV(V1, V2): # Sum L1 distances for the coherent & incoherent histograms of color coherence vectors:
-    return sum([3 * abs(V1[i][0] - V2[i][0]) + abs(V1[i][1] - V2[i][1]) for i in range(0, len(V1))])
+    weight = 3 # weight given to coherence over incoherence
+    return sum([weight * abs(V1[i][0] - V2[i][0]) + abs(V1[i][1] - V2[i][1]) for i in range(0, len(V1))])
 
 #def rgb2lab(rgb): # Convert image format from RGB to CIE LAB:
 #    return cv2.cvtColor(np.uint8([[rgb]]), cv2.COLOR_RGB2LAB)[0][0]
