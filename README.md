@@ -33,6 +33,6 @@ are part of a blob with less. Sorting by CCV minimizes the sum of the L1-distanc
 both histograms between adjacent images.  This is one of the simplest color-comparison 
 algorithms that uses spatial information. 
 
-### mosaic.jpg
+### mosaic2.jpg
 ![](refs/mosaic.jpg?raw=true)
 
