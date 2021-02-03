@@ -34,5 +34,5 @@ both histograms between adjacent images.  This is one of the simplest color-comp
 algorithms that uses spatial information. 
 
 ### mosaic.jpg
-![](mosaic.jpg?raw=true)
+![](mosaic2.jpg?raw=true)
 
