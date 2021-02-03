@@ -82,7 +82,7 @@ def bgr2lab(v): # Numerical conversion of BGR to LAB Coordinates without using c
     RGB2XYZ_MAT = np.array([[0.4124, 0.3576, 0.1805], [0.2126, 0.7152, 0.0722], [0.0193, 0.1192, 0.9505]])
 
     XYZ = [round(element, 4) for element in np.matmul(RGB2XYZ_MAT,RGB)]
-    XYZ = np.matmul(np.array([[1/95.047,0,0], [0, 1/100.0, 0], [0, 0, 1/108.883]]), XYZ) # dot product 
+    XYZ = np.matmul(np.array([[1/95.047,0,0], [0, 1/100.0, 0], [0, 0, 1/108.883]]), XYZ) 
     XYZ = [element**0.33333 if element > 0.008856 else 7.787*element + 16.0/116 for element in XYZ]
     
     XYZ2LAB_MAT = np.array([[0, 116, 0], [500, -500, 0], [0, 200, -200]])

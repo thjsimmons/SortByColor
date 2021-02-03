@@ -49,118 +49,78 @@ def loopSort(entries, func): # Sort entries in order that minimizes 'func' betwe
     return loop
 
 
-def reSort(loop, func, total):
-    '''
-    can pre-compute distances between all histograms into
-    an 89x89 matrix then just retrieve the result
+def reSort(loop, func, total): 
+    # Passes back through sorted loop (fixed # of passes) and tries to minimize
+    # either total distance of the image loop or the local distances if total = False. 
+    # The end element is popped and tested at each position in the loop for a distance improvement
 
-    '''
-
-    # First convert loop entries into numbered entries 'nloop'
-    # at the end the names will be retrieved into a new loop
-    
-    nloop =  copy.deepcopy(loop) # numbered loop
+    nloop =  copy.deepcopy(loop) # convert loop entry names to numbers
     for i in range(len(nloop)):
         nloop[i][0] = i
-    #print "loop = ", loop
+   
     loop_length = len(nloop)
+
+    # Pre-compute distances between all possible loop combinations and store in distance matrix:
     distance_matrix = np.zeros([loop_length, loop_length])
 
     for i in range(loop_length):
         for j in range(loop_length):
             if i != j:
-                distance_matrix[i][j] = func(loop[i][1], loop[j][1])   # symmetric about diagonal which is 0, order of i, j does not matter
+                distance_matrix[i][j] = func(loop[i][1], loop[j][1])   # symmetric about diagonal which is all 0s, order of i, j does not matter
     
-    #print("distance matrix = ", distance_matrix)
-    '''
-    Try iterating backwards from end of loop and insert the end element
-    into the new place minimizes it's function value w.r.t adjacent elements
-    and w.r.t all other positions
-
-    '''
-    max_pass_count = 50
+    max_pass_count = 50 # max number of passes or re-sorts
     pass_count = 0
 
+    # while effectively shuffles the nloop for distance improvements:
     while pass_count < max_pass_count:
-        #print("\n PASS # ", pass_count, "\n")
-        #print("nloop = ", nloop)
-        # nloop gets rearranged but the 1st value of each entry keeps track of the original index w.r.t the distance_matrix
-        # nloop length never changes, stays the same only for each pass
-        moving_loop_entry = nloop.pop(-1) # [loop index, CCV]
-        moving_index = moving_loop_entry[0]
-        mindex = -1
-        val = -1
+  
+        moving_loop_entry = nloop.pop(-1)   # end element popped off
+        moving_index = moving_loop_entry[0] # index of end element 
+
+        mindex = -1 # becomes new index for moving entry 
+        val = -1    # total distance value given moving entry at mindex
        
-        # This can be its own function like findMinimum
-        # Iterate forward and find a better place for last element 
-        for i in range(loop_length-1): # has 1 less elements after pop, 
+        for i in range(loop_length-1): # iterate over loop 
             avg_of_distances =0
             total_distance = 0
-            # compare moving_value to static_value i
-         
-            # Get distance between moving entry and current entry from distance matrix
-            # minimize average of distances
-            # to insert at location i would be push that element forward to i+1
-            # still have to get index 
-            # i is current position of entry in nloop, nloop[i][0] is original index
 
-            # Have to fix it back with the beginning of the loop!
-
-            # iterate from 0 to len-1 ... sum of 
-            # iterate from 0 to len-1 ... sum of 
-            if i == 0 or i == loop_length-1: # beginning, never actually equals loop_length - 1
-                behind_index = nloop[loop_length-2][0] # behind
-                ahead_index = nloop[0][0]   # ahead/at - INSERTING AT PUSHES THIS ELEMENT FORWARD
+            # If total = False then avg_of_distances (average of local distances between adjacent loop entries) is minimized:
+            if i == 0 or i == loop_length-1:             # insert between end and starting element
+                behind_index = nloop[loop_length-2][0]   # end element
+                ahead_index = nloop[0][0]                # starting element
                 avg_of_distances = (distance_matrix[behind_index, moving_index] + distance_matrix[ahead_index, moving_index])/2.0
-   
-
-            else: 
-                behind_index = nloop[i-1][0] # behind
-                ahead_index = nloop[i][0]   # ahead/at - INSERTING AT PUSHES THIS ELEMENT FORWARD
+            else:                                        # insert at i, between (i-1) and i which is pushed forward
+                behind_index = nloop[i-1][0]             
+                ahead_index = nloop[i][0]   
                 avg_of_distances = (distance_matrix[behind_index, moving_index] + distance_matrix[ahead_index, moving_index])/2.0
 
-            # Calc total distance 
-
-            '''
-            so its like you're assuming that moving_entry is inserted at nloop[i]
-            and compensating for that in the sum:
-
-            when i == 0, moving_entry is inserted at the beginning at nloop[0]
-
-            '''
-
-            nloop_copy = copy.deepcopy(nloop)
+            nloop_test = copy.deepcopy(nloop) # create copy and insert the moving entry to test
 
             if i == loop_length-1: # inserted between end and 0
-                nloop_copy.append(moving_loop_entry)
+                nloop_test.append(moving_loop_entry)
             else:
-                nloop_copy.insert(i, moving_loop_entry)
-            #total_distance = distance_matrix[behind_index, moving_index] + \
-            #                 distance_matrix[ahead_index, moving_index] + \
-            
-            # if i = 0 then behind_index = next to last column in matrix, ahead_index = 0th column
-            # 
+                nloop_test.insert(i, moving_loop_entry)
+      
             N = distance_matrix.shape[0]
-
-            # at N-1 its index N-1 minus index N-2 
-            for k in range(N):  # index never reaches end which 
-                if k == 0:
-                    d = distance_matrix[nloop_copy[-1][0], nloop_copy[0][0]]
+            # Get total distance of loop with inserted moving entry using the pre-computed distance matrix:
+            for k in range(N):  
+                if k == 0:    # distance between end and starting element
+                    d = distance_matrix[nloop_test[-1][0], nloop_test[0][0]]
                 else:
-                    d = distance_matrix[nloop_copy[k-1][0], nloop_copy[k][0]]
+                    d = distance_matrix[nloop_test[k-1][0], nloop_test[k][0]]
 
                 total_distance += d
-            #total_distance = avg_of_distances
-            if total:
+          
+            if total: 
                 if mindex == -1 or total_distance < val:
                     val = total_distance
-                    mindex = i # moving entry goes between i, i+1 therefore inserted at i+1
+                    mindex = i 
             else:
                 if mindex == -1 or avg_of_distances < val:
                     val = avg_of_distances
-                    mindex = i # moving entry goes between i, i+1 therefore inserted at i+1
+                    mindex = i
         
-        # Got index of minimum position 
+        # Got index of position that minimizes distance -> insert at index
 
         if mindex == loop_length-1: # inserted between end and 0
             nloop.append(moving_loop_entry)
@@ -170,13 +130,11 @@ def reSort(loop, func, total):
         print "Resort pass =, ", pass_count, "New Index for image = ", mindex
         pass_count += 1
 
-    # once have nloop through 100 passes, convert first element back to name:
-
+    # Convert re-sorted nloop entries back to named entries:
     new_loop = nloop
 
     for i in range(len(new_loop)):
         original_index = new_loop[i][0]
-        #print("loop[original_index][0]= ", loop[original_index][0])
         new_loop[i][0] = loop[original_index][0]
     
     return new_loop 

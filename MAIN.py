@@ -27,7 +27,7 @@ def SORT_IMAGES(arg):
 
     
     RESIZE = True       # RESIZE = true -> Resize images down (or up) to certain max size, runtime scales linearly with image size
-    MAX_SIZE =  4*4
+    MAX_SIZE =  100*100
 
     BLUR = True         # Use box filter (3,3) blur on image before computing avg, hists
     RESORT = True       # Continue sorting after initial sort to improve adjacent image distances
@@ -95,7 +95,7 @@ def SORT_IMAGES(arg):
 
     print "\nSorting Complete.\n"
     
-
+ 
     # Write ordered images to corresponding loop folder:
     images = []
     for i in range(0, len(loop)):
@@ -119,6 +119,6 @@ def SORT_IMAGES(arg):
     print "\nDONE!"
     return 0
 
-arg = 0 # 4 -> sort by CCV (best)
+arg = 3 # 4 -> sort by CCV (best)
 SORT_IMAGES(arg) 
 
