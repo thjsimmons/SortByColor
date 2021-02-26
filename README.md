@@ -33,8 +33,9 @@ are part of a blob with less. Sorting by CCV minimizes the sum of the L1-distanc
 both histograms between adjacent images.  This is one of the simplest color-comparison 
 algorithms that uses spatial information. 
 
-### mosaic.jpg
-![](mosaics/mosaic2.jpg?raw=true)
-
 ### game.py: "ideal" result of sorting by hand 
 ![](gifs/game.gif?raw=true)
+
+### mosaic.jpg: approaching best result using CCVs
+![](mosaics/mosaic2.jpg?raw=true)
+
