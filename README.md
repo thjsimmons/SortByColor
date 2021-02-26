@@ -34,5 +34,7 @@ both histograms between adjacent images.  This is one of the simplest color-comp
 algorithms that uses spatial information. 
 
 ### mosaic.jpg
-![](mosaic2.jpg?raw=true)
+![](mosaics/mosaic2.jpg?raw=true)
 
+### game.py: "ideal" result of sorting by hand 
+![](gifs/game.gif?raw=true)
